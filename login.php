@@ -1,19 +1,18 @@
-﻿<!DOCTYPE html>
-<!-- Login Page -->
-<?php
+﻿<?php
     session_start();
     $currentpage="Login";
     include "pages.php";
 ?>
+<!-- Login Page -->
 <html>
 	<head>
 		<title>Login/New User</title>
+        <!-- TODO add this back in<link rel="stylesheet" href="index.css"> -->
 	</head>
 <body>
 
 <?php
     //<script type = "text/javascript"  src = "verifyInput.js" > </script> 
-    //<link rel="stylesheet" href="index.css">
 	include "header.php";
 	$msg = "Login or Create Account";
 
@@ -44,9 +43,13 @@
                     die('Login query failed');
                 }
                 if($loginrow = mysqli_fetch_assoc($loginres)){
-                    $msg = "Login successful!";
-                    if(!$_SESSION["username"])
+                    if(!$_SESSION["username"]){
                         $_SESSION["username"] = $uname;
+                        $tmp = $_SESSION["username"];
+                        $msg = "Login successful! Welcome, $tmp!";
+                    }else{
+                        $msg = "User was already logged in!";
+                    }
                 } else {
                     $msg = "Incorrect username or password!";
                 }
@@ -60,7 +63,7 @@
             $lname = mysqli_real_escape_string($conn, $_POST['lname']);
             $pswd = mysqli_real_escape_string($conn, $_POST['pswd']);
             $email = mysqli_real_escape_string($conn, $_POST['email']);
-            $today = mysqli_real_escape_string($conn, $_POST['date']);
+            $today = date("Y-m-d");
             $salt = base64_encode(mcrypt_create_iv(12, MCRYPT_DEV_URANDOM));
 
             $queryIn = "SELECT * FROM User where UserName='$uname' ";
@@ -96,7 +99,7 @@ mysqli_close($conn);
     </p>
     <p>
         <label for="pswd">Password:</label>
-        <input type="text" class="required" name="pswd" id="pswd">
+        <input type="password" class="required" name="pswd" id="pswd">
     </p>
     <input type="hidden" name="action" value="login">
 </fieldset>
@@ -122,14 +125,14 @@ mysqli_close($conn);
     </p>
     <p>
         <label for="pswd">Password:</label>
-        <input type="text" class="required" name="pswd" id="pswd">
+        <input type="password" class="required" name="pswd" id="pswd">
     </p>
     <p>
         <label for="email">Email:</label>
         <input type="text" class="required" name="email" id="email">
     </p>
     <input type="hidden" name="action" value="register">
-    <input type="hidden" name="date" value="<?php echo date();?>">
+    <input type="hidden" name="date" value="<?php echo date("Y-m-d");?>">
 </fieldset>
       <p>
         <input type = "submit"  value = "Submit" />

@@ -7,7 +7,7 @@
             <ul>
             <?php
             foreach ($content as $page => $location){
-                echo "<li><a href='$location?user=".$user."' ".($page==$currentpage?" class='active'":"").">".$page."</a></li>";			
+                echo "<li><a href='$location'".($page==$currentpage?" class='active'":"").">".$page."</a></li>";			
             }
             ?>
             </ul>
@@ -21,7 +21,7 @@
             ?>
             <form method="post" id="login">
                 <input type="hidden" name="action" value="logout">
-                <input type = "submit"  value = "Logout" />
+                <input type="submit"  value=" Logout " />
             </form>
         </nav>
     </div>
